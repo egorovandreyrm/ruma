@@ -153,6 +153,17 @@ event_enum! {
         #[cfg(feature = "unstable-msc4310")]
         #[ruma_enum(alias = "m.rtc.decline")]
         "org.matrix.msc4310.rtc.decline" => super::rtc::decline,
+
+        #[cfg(feature = "unstable-msc3381")]
+        "m.stream.start" => super::stream::start,
+        #[cfg(feature = "unstable-msc3381")]
+        #[ruma_enum(ident = UnstableStreamStart)]
+        "org.matrix.msc3381.stream.start" => super::stream::unstable_start,
+        #[cfg(feature = "unstable-msc3381")]
+        "m.stream.end" => super::stream::end,
+        #[cfg(feature = "unstable-msc3381")]
+        #[ruma_enum(ident = UnstableStreamEnd)]
+        "org.matrix.msc3381.stream.end" => super::stream::unstable_end,
     }
 
     /// Any state event.
@@ -392,6 +403,12 @@ impl AnyMessageLikeEventContent {
             end::PollEndEventContent, response::PollResponseEventContent,
             unstable_end::UnstablePollEndEventContent,
             unstable_response::UnstablePollResponseEventContent,
+        };
+
+        #[cfg(feature = "unstable-msc3381")]
+        use super::stream::{
+            end::StreamEndEventContent,
+            unstable_end::UnstableStreamEndEventContent
         };
 
         match self {

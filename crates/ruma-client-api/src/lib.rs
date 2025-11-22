@@ -57,6 +57,8 @@ pub mod typing;
 pub mod uiaa;
 pub mod user_directory;
 pub mod voip;
+pub mod ptt;
+pub mod mappins;
 
 use std::fmt;
 

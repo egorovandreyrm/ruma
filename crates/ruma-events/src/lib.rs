@@ -174,6 +174,10 @@ pub mod message;
 pub mod policy;
 #[cfg(feature = "unstable-msc3381")]
 pub mod poll;
+
+#[cfg(feature = "unstable-msc3381")]
+pub mod stream;
+
 pub mod presence;
 pub mod push_rules;
 pub mod reaction;

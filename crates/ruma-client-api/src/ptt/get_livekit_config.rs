@@ -2,20 +2,20 @@ pub mod v3 {
     use serde::{Deserialize, Serialize};
 
     use ruma_common::{
-        api::{request, response, Metadata},
+        api::{auth_scheme::AccessToken, request, response},
         metadata, OwnedServerName,
     };
     use ruma_common::authentication::TokenType;
     // "https://matrix.rpipro.tech/livekit-jwt-service",
 
-    const METADATA: Metadata = metadata! {
+    metadata! {
         method: POST,
         rate_limited: true,
         authentication: AccessToken,
         history: {
             1.0 => "/livekit-jwt-service/sfu/get",
         }
-    };
+    }
 
     #[derive(Clone, Debug, Deserialize, Serialize)]
     pub struct OpenIdToken {

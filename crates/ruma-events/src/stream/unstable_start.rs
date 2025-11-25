@@ -8,10 +8,10 @@ use serde::{Deserialize, Serialize};
 mod content_serde;
 
 use ruma_common::OwnedEventId;
-
+use ruma_common::room_version_rules::RedactionRules;
 use super::unstable_end::UnstableStreamEndEventContent;
 use crate::{
-    relation::Replacement, room::message::RelationWithoutReplacement, EventContent,
+    relation::Replacement, room::message::RelationWithoutReplacement,
     MessageLikeEventContent, MessageLikeEventType, RedactContent, RedactedMessageLikeEventContent,
     StaticEventContent,
 };
@@ -52,7 +52,7 @@ impl UnstableStreamStartEventContent {
 impl RedactContent for UnstableStreamStartEventContent {
     type Redacted = RedactedUnstableStreamStartEventContent;
 
-    fn redact(self, _version: &crate::RoomVersionId) -> Self::Redacted {
+    fn redact(self, _rules: &RedactionRules) -> Self::Redacted {
         RedactedUnstableStreamStartEventContent::default()
     }
 }
@@ -111,19 +111,17 @@ impl NewUnstableStreamStartEventContent {
     }
 }
 
-impl EventContent for NewUnstableStreamStartEventContent {
-    type EventType = MessageLikeEventType;
+impl StaticEventContent for NewUnstableStreamStartEventContent {
+    const TYPE: &'static str = "org.matrix.msc3381.stream.start";
 
-    fn event_type(&self) -> Self::EventType {
+    type IsPrefix = <UnstableStreamStartEventContent as StaticEventContent>::IsPrefix;
+}
+
+impl MessageLikeEventContent for NewUnstableStreamStartEventContent {
+    fn event_type(&self) -> MessageLikeEventType {
         MessageLikeEventType::UnstableStreamStart
     }
 }
-
-impl StaticEventContent for NewUnstableStreamStartEventContent {
-    const TYPE: &'static str = "org.matrix.msc3381.stream.start";
-}
-
-impl MessageLikeEventContent for NewUnstableStreamStartEventContent {}
 
 /// Form of [`NewUnstableStreamStartEventContent`] without relation.
 ///
@@ -198,19 +196,17 @@ impl ReplacementUnstableStreamStartEventContent {
     }
 }
 
-impl EventContent for ReplacementUnstableStreamStartEventContent {
-    type EventType = MessageLikeEventType;
+impl StaticEventContent for ReplacementUnstableStreamStartEventContent {
+    const TYPE: &'static str = "org.matrix.msc3381.stream.start";
 
-    fn event_type(&self) -> Self::EventType {
+    type IsPrefix = <UnstableStreamStartEventContent as StaticEventContent>::IsPrefix;
+}
+
+impl MessageLikeEventContent for ReplacementUnstableStreamStartEventContent {
+    fn event_type(&self) -> MessageLikeEventType {
         MessageLikeEventType::UnstableStreamStart
     }
 }
-
-impl StaticEventContent for ReplacementUnstableStreamStartEventContent {
-    const TYPE: &'static str = "org.matrix.msc3381.stream.start";
-}
-
-impl MessageLikeEventContent for ReplacementUnstableStreamStartEventContent {}
 
 /// Redacted form of UnstableStreamStartEventContent
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -224,19 +220,17 @@ impl RedactedUnstableStreamStartEventContent {
     }
 }
 
-impl EventContent for RedactedUnstableStreamStartEventContent {
-    type EventType = MessageLikeEventType;
+impl StaticEventContent for RedactedUnstableStreamStartEventContent {
+    const TYPE: &'static str = "org.matrix.msc3381.stream.start";
 
-    fn event_type(&self) -> Self::EventType {
+    type IsPrefix = <UnstableStreamStartEventContent as StaticEventContent>::IsPrefix;
+}
+
+impl RedactedMessageLikeEventContent for RedactedUnstableStreamStartEventContent {
+    fn event_type(&self) -> MessageLikeEventType {
         MessageLikeEventType::UnstableStreamStart
     }
 }
-
-impl StaticEventContent for RedactedUnstableStreamStartEventContent {
-    const TYPE: &'static str = "org.matrix.msc3381.stream.start";
-}
-
-impl RedactedMessageLikeEventContent for RedactedUnstableStreamStartEventContent {}
 
 /// An unstable block for stream start content.
 #[derive(Debug, Clone, Serialize, Deserialize)]

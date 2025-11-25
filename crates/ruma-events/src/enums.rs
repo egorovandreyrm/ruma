@@ -485,6 +485,15 @@ impl AnyMessageLikeEventContent {
             | Self::RoomRedaction(_)
             | Self::Sticker(_)
             | Self::_Custom { .. } => None,
+
+            #[cfg(feature = "unstable-msc3381")]
+            Self::StreamEnd(StreamEndEventContent { relates_to, .. })
+            | Self::UnstableStreamEnd(UnstableStreamEndEventContent { relates_to, .. }) => {
+                Some(encrypted::Relation::Reference(relates_to.clone()))
+            }
+
+            #[cfg(feature = "unstable-msc3381")]
+            Self::StreamStart(_) | Self::UnstableStreamStart(_) => None,
         }
     }
 }
